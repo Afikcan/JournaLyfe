@@ -48,8 +48,6 @@ export default function MyJournal() {
   useEffect(() => {
     const fetchData = async () => {
       const assembledData = await assembleData(userId);
-      console.log("akif: ", assembledData);
-      console.log("akif user ", user.sub_tier);
       setData(assembledData);
     };
 

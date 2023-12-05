@@ -11,7 +11,7 @@ router.post('/register', validInfo, async (req, res) => {
         
 
         // Extract user data from the request body
-        const { username ,password, name ,surname ,email ,date_of_birth, account_status , sub_tier } = req.body;
+        const { username ,password, name ,surname ,email ,date_of_birth, credit_count , sub_tier } = req.body;
 
         // Enclose the email value in single quotes in the SQL query
         const user = await pool.query('SELECT * FROM "user" WHERE email = $1', [email]);
@@ -31,12 +31,12 @@ router.post('/register', validInfo, async (req, res) => {
 
         // Insert user data into the "user" table
         const insertUserQuery = `
-        INSERT INTO "user" (username ,password, name ,surname ,email ,date_of_birth, account_status , sub_tier )
+        INSERT INTO "user" (username ,password, name ,surname ,email ,date_of_birth, credit_count , sub_tier )
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )
         RETURNING user_id, username, email
         `;
 
-        const values = [username, hashedPassword, name, surname, email, date_of_birth, account_status, sub_tier];
+        const values = [username, hashedPassword, name, surname, email, date_of_birth, credit_count, sub_tier];
         const { rows } = await pool.query(insertUserQuery, values);
 
 

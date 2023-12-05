@@ -1,5 +1,8 @@
 const S3 = require("aws-sdk/clients/s3")
 const fs = require("fs")
+const axios = require("axios");
+const stream = require("stream");
+const { promisify } = require("util");
 
 require("dotenv").config();
 
@@ -14,17 +17,15 @@ const s3 = new S3({
     secretAccessKey
 })
 
-function uploadFile(file) {
-    const fileStream = fs.createReadStream(file.path)
+function uploadFile(fileStream, filename) {
     const uploadParams = {
         Bucket: bucketName,
         Body: fileStream,
-        Key: file.filename, 
-        //ContentType: file.mimetype, // Set the correct content type for the image
+        Key: filename
     };
-
     return s3.upload(uploadParams).promise();
 }
+
 
 function getFileStream(fileKey){
     const downloadParams = {
@@ -35,4 +36,12 @@ function getFileStream(fileKey){
     return s3.getObject(downloadParams).createReadStream()
 }
 
-module.exports = { uploadFile , getFileStream};
+async function downloadImage(url) {
+    const response = await axios({
+        url,
+        responseType: 'stream',
+    });
+    return response.data;
+}
+
+module.exports = { uploadFile , getFileStream, downloadImage};

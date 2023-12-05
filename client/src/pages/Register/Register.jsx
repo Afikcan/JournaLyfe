@@ -31,7 +31,7 @@ export default function SignupCard() {
     surname: "",
     email: "",
     date_of_birth: "",
-    credit: 3,
+    credit_count: 3,
   });
 
   const dispatch = useDispatch();
@@ -91,7 +91,7 @@ export default function SignupCard() {
 
         toast({
           title: "Register successful.",
-          description: "Welcome to TaskForce!",
+          description: "Welcome to JournaLyfe!",
           status: "success",
           duration: 2000,
           isClosable: true,

@@ -1,9 +1,16 @@
 const pool = require("../database");
 const router = require("express").Router();
+const { uploadFile, getFileStream, downloadImage } = require("../utils/s3")
+const { createImageByText } = require("../utils/openai")
+
+require("dotenv").config();
+
+const bucketName = process.env.AWS_BUCKET_NAME
+const region = process.env.AWS_BUCKET_REGION
 
 router.post('/post', async (req, res) => {
   const { user_id, title, content, published } = req.body;
-  
+  console.log(1)
   try {
     // Insert writing into database
     const writingResult = await pool.query(
@@ -11,16 +18,26 @@ router.post('/post', async (req, res) => {
       [user_id, title, content, published]
     );
     const writing_id = writingResult.rows[0].writing_id;
+    console.log(2)
     
     // Generate an image based on the content
-    //const imageUrl = await createImageByText(content);
-    const imageUrl = "https://oaidalleapiprodscus.blob.core.windows.net/private/org-el9OIrLnRgNg6PoU7Er8GU7y/user-xK05CSttDOcKlLqk1BMPilda/img-Ss0ILRm8oQGeIMp7z1qxOB5r.png?st=2023-12-05T13%3A08%3A00Z&se=2023-12-05T15%3A08%3A00Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-12-05T12%3A56%3A44Z&ske=2023-12-06T12%3A56%3A44Z&sks=b&skv=2021-08-06&sig=U1QwPM%2B7eDGMCShWG3842ofE5Kbzu%2BqFi7Ok6IjHzlM%3D"    // Define a unique file name for the image
+    const generatedImageUrl = await createImageByText(content);
+
+    console.log(generatedImageUrl)
+    //const generatedImageUrl = "https://journal-lyfe-images.s3.eu-west-3.amazonaws.com/journlyfe_logo.png"
+
+    console.log(3)
+
+    const imageStream = await downloadImage(generatedImageUrl);
     
-    /*
-    const filename = `user_${user_id}_writing_${writing_id}.jpg`;
+    const filename = `user_${user_id}_writing_${writing_id}.png`;
+    console.log(4)
+
     // Upload the image to S3
     const uploadResult = await uploadFile(imageStream, filename);
-    */
+    
+    const imageUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${filename}`;
+    console.log(5)
     
     res.status(200).json({imageUrl, writing_id});
   } catch (error) {
@@ -28,6 +45,22 @@ router.post('/post', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
+
+router.get('/getAllPublished', async (req, res) => {
+  try {
+    // Query to select all writings from the database
+    const allWritings = await pool.query("SELECT * FROM writings WHERE published = true");
+
+    // Send the retrieved writings as a JSON response
+    res.json(allWritings.rows);
+  } catch (error) {
+    // If there's an error, send a 500 server error response
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+});
+
 
 // get writings by userId
   router.get("/:userId", async (req, res) => {
@@ -41,16 +74,6 @@ router.post('/post', async (req, res) => {
       res.json(writings.rows);
     } catch (err) {
       console.error(err.message);
-    }
-  });
-
-  router.get("/getAll", async (req, res) => {
-    try {
-      const { rows } = await pool.query('SELECT * FROM "public"."writings"');
-      res.status(200).json({result: rows});
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server error');
     }
   });
 
