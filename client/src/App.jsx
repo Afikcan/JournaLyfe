@@ -13,6 +13,7 @@ import Pricing from "./pages/Pricing";
 import CreateJournal from "./pages/CreateJournal";
 import ImageUpload from "./pages/ImageUpload";
 import MyJournal from "./pages/MyJournal";
+import Blog from "./pages/Blog";
 
 /*
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/createJournal" element={<CreateJournal />} />
           <Route path="/imageUpload" element={<ImageUpload />} />
           <Route path="/myJournal" element={<MyJournal />} />
+          <Route path="/blog" element={<Blog />} />
         </Routes>
       </Router>
     </ChakraProvider>

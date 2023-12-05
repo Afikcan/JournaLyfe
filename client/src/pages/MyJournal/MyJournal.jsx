@@ -134,8 +134,6 @@ export default function MyJournal() {
         duration: 5000,
         isClosable: true,
       });
-
-      console.log("akif toggle finished: ", selectedWriting);
     } catch (error) {
       console.error("Error toggling publish status:", error);
     }
@@ -154,34 +152,42 @@ export default function MyJournal() {
           My Journal
         </Heading>
         <Divider mb={4} />
-        {data.map((item) => (
-          <Box
-            key={item.writing.writing_id}
-            onClick={() => openModal(item)}
-            cursor="pointer"
-          >
-            <Flex
-              align="center"
-              justify="center"
-              p={6}
-              boxShadow="md"
-              borderRadius="md"
-              role="button"
-              bg={modalBg}
-              _hover={{ bg: modalHoverBg }}
-              flexDirection={"column"}
+        <Flex
+          flexDirection="row" // setting the direction to row
+          wrap="wrap" // enabling wrapping
+          gap="20px" // setting a gap between boxes
+          justifyContent="center" // optional, for horizontal alignment
+        >
+          {data.map((item) => (
+            <Box
+              key={item.writing.writing_id}
+              onClick={() => openModal(item)}
+              cursor="pointer"
             >
-              <Image
-                src={`${baseUrl}/image/get/${item.image[0].link}`}
-                alt={item.writing.title}
-                boxSize="200px"
-              />
-              <Text mt={4} fontWeight="bold">
-                {item.writing.title}
-              </Text>
-            </Flex>
-          </Box>
-        ))}
+              <Flex
+                align="center"
+                justify="center"
+                p={6}
+                boxShadow="md"
+                borderRadius="md"
+                role="button"
+                bg={modalBg}
+                _hover={{ bg: modalHoverBg }}
+                flexDirection={"column"}
+              >
+                <Image
+                  src={item.image[0].link}
+                  alt={item.writing.title}
+                  boxSize="200px"
+                  objectFit="contain"
+                />
+                <Text mt={4} fontWeight="bold">
+                  {item.writing.title}
+                </Text>
+              </Flex>
+            </Box>
+          ))}
+        </Flex>
       </Flex>
       <Footer />
 
@@ -193,7 +199,7 @@ export default function MyJournal() {
             <ModalCloseButton />
             <ModalBody>
               <Image
-                src={`${baseUrl}/image/get/${selectedWriting.image[0].link}`}
+                src={selectedWriting.image[0].link}
                 alt={selectedWriting.writing.title}
               />
 

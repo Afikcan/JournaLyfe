@@ -25,7 +25,7 @@ export const NAV_ITEMS = [
   },
   {
     label: "Blog",
-    href: "#",
+    href: "/Blog",
   },
   {
     label: "Pricing",
