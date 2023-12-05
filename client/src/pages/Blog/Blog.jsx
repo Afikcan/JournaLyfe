@@ -14,6 +14,9 @@ import {
   Divider,
   Image,
   Text,
+  FormControl,
+  FormLabel,
+  Input,
 } from "@chakra-ui/react";
 import Footer from "../../components/FooterSmall";
 import axios from "axios";
@@ -152,6 +155,18 @@ export default function Blog() {
               />
               <Text fontSize="xl">{selectedWriting.writing.content}</Text>
               <Divider mb={4} mt={4} />
+
+              <FormControl mb={4}>
+                <FormLabel htmlFor="comment">Write a Comment</FormLabel>
+                <Input id="comment" placeholder="Enter your comment here" />
+                <Button
+                  mt={4}
+                  colorScheme="orange" /* You can change the color scheme */
+                >
+                  Submit Comment
+                </Button>
+              </FormControl>
+
               <Heading as="h3" size="lg" mb={4}>
                 Comments
               </Heading>
