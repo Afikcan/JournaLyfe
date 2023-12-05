@@ -21,6 +21,9 @@ app.listen(port, () => console.log(`Server running on port ${port}`));
 
 app.use("/user", require("./routes/user"))
 app.use("/auth", require("./routes/auth"))
+app.use("/image", require("./routes/image"))
+app.use("/writing", require("./routes/writing"))
+app.use("/comment", require("./routes/comment"))
 
 if (process.env.NODE_ENV === "production") {
     app.get("/*", (req, res) => {

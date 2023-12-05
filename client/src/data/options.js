@@ -1,41 +1,35 @@
 export const NAV_ITEMS = [
   {
-    label: "Inspiration",
+    label: "My Lyfe",
     children: [
       {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
+        label: "Journal",
+        subLabel: "Your diary to keep track of your adventurous lyfe",
+        href: "/myJournal",
+      },
+      {
+        label: "Galerie",
+        subLabel: "A glance to see your feelings",
         href: "#",
       },
       {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "#",
+        label: "Write",
+        subLabel: "So... what's up with today?",
+        href: "/createJournal",
       },
     ],
   },
   {
-    label: "Find Work",
-    children: [
-      {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "#",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "#",
-      },
-    ],
-  },
-  {
-    label: "Learn Design",
+    label: "Buddy",
     href: "#",
   },
   {
-    label: "Hire Designers",
+    label: "Blog",
     href: "#",
+  },
+  {
+    label: "Pricing",
+    href: "/pricing",
   },
 ];
 

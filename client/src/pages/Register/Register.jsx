@@ -14,12 +14,7 @@ import {
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
-import {
-  setAuth,
-  fetchUser,
-  setUser,
-  getPlans,
-} from "../../reducers/authSlice";
+import { setAuth, fetchUser, setUser } from "../../reducers/authSlice";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -41,7 +36,6 @@ export default function SignupCard() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const plans = useSelector(getPlans);
   const toast = useToast();
 
   const handleInputChange = (e) => {
@@ -90,22 +84,6 @@ export default function SignupCard() {
               user: user.payload,
             })
           );
-
-          // if user logedin and already had created a plan decrease credit by one
-          if (plans && plans.length > 0) {
-            try {
-              console.log(user);
-              const response = await axios.post(
-                `http://localhost:5000/user/decreaseCredit/${user.payload.user_id}`,
-                {}
-              );
-              console.log(response.data);
-              // Handle the response as needed
-            } catch (error) {
-              console.error(error);
-              // Handle errors if any
-            }
-          }
         }
 
         // Handle successful registration, e.g., redirect to login page

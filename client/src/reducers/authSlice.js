@@ -5,7 +5,6 @@ const initialState = {
   isLogged: false,
   token: null,
   user: null,
-  plans: null,
   notifications: null,
 };
 
@@ -51,13 +50,6 @@ export const authSlice = createSlice({
     },
 
 
-    setPlans: (state, action) => {
-      const { plans } = action.payload;
-      state.plans = plans;
-
-      // Save the updated state to localStorage
-      localStorage.setItem('plans', JSON.stringify(state));
-    },
 
     logOut: (state, action) => {
       state.user = null;
@@ -72,8 +64,7 @@ export const authSlice = createSlice({
 export const {
   setAuth,
   setUser,
-  logOut,
-  setPlans
+  logOut
 } = authSlice.actions;
 
 export default authSlice.reducer;
@@ -81,4 +72,3 @@ export default authSlice.reducer;
 export const getUser = state => state.auth.user;
 export const getToken = state => state.auth.token;
 export const getIsLogged = state => state.auth.isLogged;
-export const getPlans = state => state.auth.plans;
