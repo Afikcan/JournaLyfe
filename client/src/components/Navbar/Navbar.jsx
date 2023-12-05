@@ -205,7 +205,7 @@ export default function WithSubnavigation() {
                 </Center>
                 {/* <MenuItem icon={<ColorModeSwitcher />}>Toggle Theme </MenuItem> */}
                 <MenuDivider />
-                <Link to="/profile">
+                <Link to="/MyJournal">
                   <MenuItem>My Profile</MenuItem>
                 </Link>
                 <MenuItem onClick={onOpenModal}></MenuItem>
