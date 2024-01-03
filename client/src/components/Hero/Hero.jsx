@@ -32,7 +32,7 @@ export default function Hero() {
         spacing={{ base: 8, md: 10 }}
         pt={{ base: 20, md: 28 }}
       >
-        <Flex justifyContent="center" alignItems="center" gap="20px">
+        <Flex justifyContent="center" alignItems="center" gap="30px">
           <Box textAlign="center">
             <Heading
               fontWeight={600}
@@ -78,35 +78,6 @@ export default function Hero() {
               boxSize="300px"
               objectFit="cover"
             />
-          </Box>
-        </Flex>
-        <Flex justifyContent="center" alignItems="center" gap="20px">
-          <Box>
-            <Image
-              src={buddy_img}
-              alt="Buddy Image"
-              borderRadius="full"
-              boxSize="300px"
-              objectFit="cover"
-            />
-          </Box>
-          <Box textAlign="center">
-            <Heading
-              fontWeight={600}
-              fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
-              lineHeight="110%"
-              color={mainTextColor}
-            >
-              Meet Your
-              <Text
-                as="span"
-                sx={{ fontFamily: "Pacifico, cursive" }}
-                color={highlightColor}
-              >
-                {" "}
-                Buddy
-              </Text>
-            </Heading>
           </Box>
         </Flex>
         <Flex justifyContent="center" alignItems="center" gap="20px">

@@ -190,14 +190,16 @@ export default function Pricing() {
                     </ListItem>
                   </List>
                   <Box w="80%" pt={7}>
-                    <Button
-                      w="full"
-                      bgGradient="linear(to-r, orange.300, orange.600)"
-                      colorScheme="purple"
-                      boxShadow={"0 5px 20px 0px rgb(98 178 236/ 60%)"}
-                    >
-                      Start trial
-                    </Button>
+                    <Link to="/register">
+                      <Button
+                        w="full"
+                        bgGradient="linear(to-r, orange.300, orange.600)"
+                        colorScheme="purple"
+                        boxShadow={"0 5px 20px 0px rgb(98 178 236/ 60%)"}
+                      >
+                        Start trial
+                      </Button>
+                    </Link>
                   </Box>
                 </VStack>
               </Box>
@@ -244,9 +246,11 @@ export default function Pricing() {
                   </ListItem>
                 </List>
                 <Box w="80%" pt={7}>
-                  <Button w="full" colorScheme="orange" variant="outline">
-                    Start trial
-                  </Button>
+                  <Link to="/register">
+                    <Button w="full" colorScheme="orange" variant="outline">
+                      Start trial
+                    </Button>
+                  </Link>
                 </Box>
               </VStack>
             </PriceWrapper>

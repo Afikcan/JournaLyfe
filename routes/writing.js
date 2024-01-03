@@ -8,14 +8,15 @@ require("dotenv").config();
 const bucketName = process.env.AWS_BUCKET_NAME
 const region = process.env.AWS_BUCKET_REGION
 
+// posting writings and generating ai image
 router.post('/post', async (req, res) => {
-  const { user_id, title, content, published } = req.body;
+  const { user_id, title, content, published, color} = req.body;
   console.log(1)
   try {
     // Insert writing into database
     const writingResult = await pool.query(
-      `INSERT INTO "writings" (user_id, title, content, published) VALUES ($1, $2, $3, $4) RETURNING writing_id`,
-      [user_id, title, content, published]
+      `INSERT INTO "writings" (user_id, title, content, published, color) VALUES ($1, $2, $3, $4, $5) RETURNING writing_id`,
+      [user_id, title, content, published, color]
     );
     const writing_id = writingResult.rows[0].writing_id;
     console.log(2)
@@ -41,12 +42,12 @@ router.post('/post', async (req, res) => {
     
     res.status(200).json({imageUrl, writing_id});
   } catch (error) {
-    // Handle error
-    res.status(500).send('Server error');
+    console.error('Error in /post route:', error);
+    res.status(500).send('Server error: ' + error.message);
   }
 });
 
-
+// geting all published data for our blog page
 router.get('/getAllPublished', async (req, res) => {
   try {
     // Query to select all writings from the database
@@ -62,7 +63,7 @@ router.get('/getAllPublished', async (req, res) => {
 });
 
 
-// get writings by userId
+// get writings by userId, 
   router.get("/:userId", async (req, res) => {
     try {
       const { userId } = req.params;

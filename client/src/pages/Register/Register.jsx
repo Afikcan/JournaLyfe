@@ -31,7 +31,7 @@ export default function SignupCard() {
     surname: "",
     email: "",
     date_of_birth: "",
-    credit_count: 3,
+    credit_count: 5,
   });
 
   const dispatch = useDispatch();
@@ -85,9 +85,6 @@ export default function SignupCard() {
             })
           );
         }
-
-        // Handle successful registration, e.g., redirect to login page
-        console.log("User registered successfully.");
 
         toast({
           title: "Register successful.",

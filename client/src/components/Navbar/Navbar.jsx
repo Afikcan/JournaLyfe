@@ -191,8 +191,8 @@ export default function WithSubnavigation() {
                 {/* <br /> */}
                 <MenuDivider />
                 <Center>
-                  <Text>
-                    {user && `Account Status: ${user.account_status}`}
+                  <Text fontWeight={"600"}>
+                    Credits: {user && user.credit_count}
                   </Text>
                 </Center>
                 <MenuDivider />
@@ -209,7 +209,6 @@ export default function WithSubnavigation() {
                   <MenuItem>My Profile</MenuItem>
                 </Link>
                 <MenuItem onClick={onOpenModal}></MenuItem>
-                <MenuItem>Settings</MenuItem>
                 <MenuItem
                   onClick={() => {
                     dispatch(logOut());

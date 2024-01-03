@@ -15,4 +15,21 @@ router.get("/:writingId", async (req, res) => {
     }
   });
 
+
+router.post("/", async (req, res) => {
+  try {
+      const { user_id, content, writing_id, username } = req.body;
+      const newComment = await pool.query(
+          "INSERT INTO comments (user_id, content, writing_id, username) VALUES ($1, $2, $3, $4) RETURNING *",
+          [user_id, content, writing_id, username]
+      );
+
+      res.json(newComment.rows[0]);
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+  }
+});
+
+
 module.exports = router;

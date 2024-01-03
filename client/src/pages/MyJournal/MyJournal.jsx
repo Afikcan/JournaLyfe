@@ -14,6 +14,7 @@ import {
   Divider,
   Image,
   Text,
+  Select,
 } from "@chakra-ui/react";
 import Footer from "../../components/FooterSmall";
 import { useSelector } from "react-redux";
@@ -29,6 +30,7 @@ export default function MyJournal() {
   const [selectedWriting, setSelectedWriting] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toast = useToast();
+  const [filterColor, setFilterColor] = useState("");
 
   const navigate = useNavigate();
   const isLogged = useSelector(getIsLogged);
@@ -87,6 +89,7 @@ export default function MyJournal() {
           };
         })
       );
+      console.log("akif: ", writingsWithDetails);
       return writingsWithDetails;
     } catch (error) {
       console.error("Error assembling data", error);
@@ -149,6 +152,28 @@ export default function MyJournal() {
         <Heading as="h2" size="lg" mb={4}>
           My Journal
         </Heading>
+        <Flex justify="center" width="full" mb={4}>
+          <Select
+            placeholder="Filter by color"
+            value={filterColor}
+            onChange={(e) => setFilterColor(e.target.value)}
+            width="250px"
+            variant="filled"
+            bg={modalBg}
+            _hover={{ bg: modalHoverBg }}
+          >
+            <option value="Red">Red</option>
+            <option value="Blue">Blue</option>
+            <option value="Green">Green</option>
+            <option value="Yellow">Yellow</option>
+            <option value="Purple">Purple</option>
+            <option value="Orange">Orange</option>
+            <option value="Pink">Pink</option>
+            <option value="Brown">Brown</option>
+            <option value="Black">Black</option>
+            <option value="White">White</option>
+          </Select>
+        </Flex>
         <Divider mb={4} />
         <Flex
           flexDirection="row" // setting the direction to row
@@ -156,35 +181,39 @@ export default function MyJournal() {
           gap="20px" // setting a gap between boxes
           justifyContent="center" // optional, for horizontal alignment
         >
-          {data.map((item) => (
-            <Box
-              key={item.writing.writing_id}
-              onClick={() => openModal(item)}
-              cursor="pointer"
-            >
-              <Flex
-                align="center"
-                justify="center"
-                p={6}
-                boxShadow="md"
-                borderRadius="md"
-                role="button"
-                bg={modalBg}
-                _hover={{ bg: modalHoverBg }}
-                flexDirection={"column"}
+          {data
+            .filter(
+              (item) => !filterColor || item.writing.color === filterColor
+            )
+            .map((item) => (
+              <Box
+                key={item.writing.writing_id}
+                onClick={() => openModal(item)}
+                cursor="pointer"
               >
-                <Image
-                  src={item.image[0].link}
-                  alt={item.writing.title}
-                  boxSize="200px"
-                  objectFit="contain"
-                />
-                <Text mt={4} fontWeight="bold">
-                  {item.writing.title}
-                </Text>
-              </Flex>
-            </Box>
-          ))}
+                <Flex
+                  align="center"
+                  justify="center"
+                  p={6}
+                  boxShadow="md"
+                  borderRadius="md"
+                  role="button"
+                  bg={modalBg}
+                  _hover={{ bg: modalHoverBg }}
+                  flexDirection={"column"}
+                >
+                  <Image
+                    src={item.image[0].link}
+                    alt={item.writing.title}
+                    boxSize="200px"
+                    objectFit="contain"
+                  />
+                  <Text mt={4} fontWeight="bold">
+                    {item.writing.title}
+                  </Text>
+                </Flex>
+              </Box>
+            ))}
         </Flex>
       </Flex>
       <Footer />

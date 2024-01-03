@@ -47,6 +47,33 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+
+      if (!response.ok) {
+        // Handle non-JSON response
+        if (response.headers.get("content-type").includes("text/html")) {
+          const textResponse = await response.text();
+          toast({
+            title: "Log in failed.",
+            description: textResponse || "Unauthorized access",
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+          });
+        } else {
+          // Handle JSON response
+          const jsonResponse = await response.json();
+          toast({
+            title: "Log in failed.",
+            description: jsonResponse.message || "An error occurred.",
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+          });
+        }
+        setIsPending(false);
+        return;
+      }
+
       const parseRes = await response.json();
 
       if (parseRes.token) {
@@ -58,7 +85,6 @@ export default function Login() {
           })
         );
         localStorage.setItem("token", parseRes.token);
-        //localStorage.setItem("user", parseRes.userId);
         navigate("/");
 
         toast({

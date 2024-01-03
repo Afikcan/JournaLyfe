@@ -9,6 +9,10 @@ import {
   Flex,
   Heading,
   Input,
+  Spinner,
+  Alert,
+  AlertIcon,
+  Select,
 } from "@chakra-ui/react";
 import Footer from "../../components/Footer";
 import { useSelector } from "react-redux";
@@ -19,18 +23,23 @@ import axios from "axios";
 import baseUrl from "../../data/baseUrl";
 
 export default function CreateJournal() {
+  const [journalEntry, setJournalEntry] = useState("");
+  const [title, setTitle] = useState("");
+  const [color, setColor] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
   const isLogged = useSelector(getIsLogged);
   const user = useSelector(getUser);
   const toast = useToast();
 
-  const [journalEntry, setJournalEntry] = useState("");
-  const [title, setTitle] = useState("");
-
   const bgColor = useColorModeValue("orange.300", "orange.500");
   const headingColor = useColorModeValue("purple.500", "white");
   const buttonColorScheme = useColorModeValue("orange", "purple");
   const textareaBgColor = useColorModeValue("gray.100", "gray.700");
+
+  const selectBg = useColorModeValue("gray.100", "gray.700");
+  const selectHoverBg = useColorModeValue("gray.200", "gray.600");
 
   useEffect(() => {
     if (!isLogged) {
@@ -43,10 +52,21 @@ export default function CreateJournal() {
   };
 
   const handleSubmit = async () => {
-    if (!title || !journalEntry) {
-      alert("Please fill in both title and content.");
+    if (!title || !journalEntry || !color) {
+      toast({
+        position: "top",
+        render: () => (
+          <Alert status="error" variant="solid">
+            <AlertIcon />
+            Please fill in both title, content, and color.
+          </Alert>
+        ),
+        duration: 3000,
+      });
       return;
     }
+
+    setIsLoading(true); // Start loading
 
     try {
       const user_id = user.user_id;
@@ -58,6 +78,7 @@ export default function CreateJournal() {
           title,
           content: journalEntry,
           published,
+          color,
         })
         .then(async (res) => {
           await axios.post(`${baseUrl}/image/postImage`, {
@@ -68,6 +89,9 @@ export default function CreateJournal() {
             published: true,
           });
         });
+
+      // Decrease user's credit after successful journal entry submission
+      await decreaseCredit(user_id);
 
       // Display success toast
       toast({
@@ -80,6 +104,16 @@ export default function CreateJournal() {
     } catch (error) {
       console.error("Error submitting journal entry:", error);
       // Handle the error, e.g., showing an error message
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
+  };
+
+  const decreaseCredit = async (userId) => {
+    try {
+      await axios.post(`${baseUrl}/decreaseCredit/${userId}`);
+    } catch (error) {
+      console.error("Error decreasing credit:", error);
     }
   };
 
@@ -99,6 +133,24 @@ export default function CreateJournal() {
           </Heading>
           <Container centerContent>
             <VStack spacing={4} mt="40px">
+              <Select
+                placeholder="Select color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                bg={selectBg}
+                _hover={{ bg: selectHoverBg }}
+              >
+                <option value="Red">Red</option>
+                <option value="Blue">Blue</option>
+                <option value="Green">Green</option>
+                <option value="Yellow">Yellow</option>
+                <option value="Purple">Purple</option>
+                <option value="Orange">Orange</option>
+                <option value="Pink">Pink</option>
+                <option value="Brown">Brown</option>
+                <option value="Black">Black</option>
+                <option value="White">White</option>
+              </Select>
               <Input
                 placeholder="Title of your journal entry"
                 value={title}
@@ -120,8 +172,9 @@ export default function CreateJournal() {
                 colorScheme={buttonColorScheme}
                 onClick={handleSubmit}
                 px={6}
+                isDisabled={isLoading} // Disable button when loading
               >
-                Submit
+                {isLoading ? <Spinner size="sm" /> : "Submit"}
               </Button>
             </VStack>
           </Container>
