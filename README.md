@@ -4,7 +4,7 @@ Features
 - Story Sharing: Users can write and share their personal stories, experiences, or creative fiction with the community.
 - Image Generation: Utilizing GPT's Dall-e 3 API, we automatically create and associate images with stories, adding a visual dimension to written narratives.
 - Privacy Control: Share your stories with the world or keep them private, giving you complete control over your content.
-- Community Interaction: Engage with other users through comments, likes, and shares, fostering a supportive storytelling community.
+- Community Interaction: Engage with other users through comments fostering a supportive storytelling community.
 
 Technology Stack
 
